@@ -88,7 +88,7 @@
       analyser.smoothingTimeConstant = 0.82;
 
       const volumeGain = ctx.createGain();
-      volumeGain.gain.value = this.volume;
+      volumeGain.gain.value = this.volume * 1.45;
 
       fade.connect(compressor);
       compressor.connect(analyser);
@@ -221,7 +221,7 @@
     setVolume(value) {
       this.volume = clamp(Number(value) || 0, 0, 1);
       if (this.ctx && this.volumeGain) {
-        this.volumeGain.gain.setTargetAtTime(this.volume, this.ctx.currentTime, 0.06);
+        this.volumeGain.gain.setTargetAtTime(this.volume * 1.45, this.ctx.currentTime, 0.06);
       }
     }
 
@@ -262,8 +262,8 @@
 
       this.fade.gain.cancelScheduledValues(now);
       this.fade.gain.setValueAtTime(0.0001, now);
-      this.fade.gain.exponentialRampToValueAtTime(1, now + 0.85);
-      this.volumeGain.gain.setTargetAtTime(this.volume, now, 0.04);
+      this.fade.gain.exponentialRampToValueAtTime(1, now + 0.4);
+      this.volumeGain.gain.setTargetAtTime(this.volume * 1.45, now, 0.04);
 
       this.playing = true;
       this._padPickup();
@@ -393,12 +393,12 @@
       const duration = Math.max(0.85, this.barDur - offset + 0.45);
 
       chord.forEach((midi, i) => {
-        this._pad(midi, start, duration, i % 2 === 0 ? -0.32 : 0.32, 0.026);
+        this._pad(midi, start, duration, i % 2 === 0 ? -0.32 : 0.32, 0.04);
       });
 
       if (offset > 0.3) {
         const root = chord[0] - 12;
-        this._bass(root, start, Math.min(2.4, duration), 0.055);
+        this._bass(root, start, Math.min(2.4, duration), 0.09);
       }
     }
 
@@ -414,7 +414,7 @@
       const beat = barDur / 4;
       const chord = track.chords[bar % track.chords.length];
       const progress = barStart / track.duration;
-      const intro = progress < 0.075;
+      const intro = progress < 0.02;
       const outro = progress > 0.915;
 
       const at = (beats) => {
@@ -434,21 +434,36 @@
             padStart,
             barDur * 1.02,
             i % 2 === 0 ? -0.3 : 0.3,
-            intro ? 0.023 : 0.029
+            intro ? 0.05 : 0.055,
+            bar === 0 ? 0.6 : 0
           );
         });
       }
 
+      /* A small signature figure so the first seconds already feel played. */
+      if (bar === 0) {
+        const firstLight = at(0.25);
+        const secondLight = at(1.4);
+        const thirdLight = at(2.35);
+        const fourthLight = at(3.0);
+        const firstRoot = at(0.55);
+        if (firstLight) this._pluck(chord[2] + 24, firstLight, 1.6, -0.18, 0.11);
+        if (secondLight) this._pluck(chord[3] + 24, secondLight, 1.3, 0.28, 0.07);
+        if (thirdLight) this._pluck(chord[1] + 24, thirdLight, 1.35, 0.12, 0.06);
+        if (fourthLight) this._pluck(chord[0] + 24, fourthLight, 1.5, -0.12, 0.052);
+        if (firstRoot) this._bass(chord[0] - 12, firstRoot, 2.2, 0.07);
+      }
+
       /* Bass — only once the room has settled. */
-      if (progress > 0.035) {
+      if (progress > 0.012) {
         const root = chord[0] - 12;
         const bassStart = at(0);
         if (bassStart) {
-          this._bass(root, bassStart, beat * 2.15, outro ? 0.045 : 0.068);
+          this._bass(root, bassStart, beat * 2.15, outro ? 0.075 : 0.14);
         }
         if (!outro && bar % 2 === 1) {
           const second = at(2.5);
-          if (second) this._bass(root, second, beat * 0.8, 0.037);
+          if (second) this._bass(root, second, beat * 0.8, 0.075);
         }
       }
 
@@ -460,7 +475,7 @@
           const when = at(offset);
           if (!when) return;
           const note = chord[(i + bar) % chord.length] + (i % 3 === 2 ? 24 : 12);
-          this._pluck(note, when, 0.66, i % 2 === 0 ? 0.4 : -0.4, 0.031);
+          this._pluck(note, when, 0.66, i % 2 === 0 ? 0.4 : -0.4, 0.058);
         });
         if (progress > 0.5 && bar % 4 === 0) {
           const when = at(3.25);
@@ -497,15 +512,11 @@
             when,
             Math.min(4.2, barDur * 1.2),
             bar % 4 === 0 ? -0.52 : 0.52,
-            0.012
+            0.015
           );
         }
       }
     }
-
-    /* --------------------------------------------------------
-       Voices
-       -------------------------------------------------------- */
 
     _track(node) {
       this.sources.add(node);
@@ -529,7 +540,7 @@
       return gain;
     }
 
-    _pad(midi, start, duration, pan, peak) {
+    _pad(midi, start, duration, pan, peak, attackOverride = 0) {
       const ctx = this.ctx;
       if (!ctx) return;
       const frequency = midiToFreq(midi);
@@ -542,7 +553,9 @@
       filter.frequency.linearRampToValueAtTime(560, start + duration);
 
       const gain = ctx.createGain();
-      const attack = Math.min(1.5, Math.max(0.36, duration * 0.45));
+      const attack = attackOverride > 0
+        ? clamp(attackOverride, 0.18, 1.6)
+        : Math.min(1.5, Math.max(0.36, duration * 0.45));
       const sustainAt = start + Math.max(attack + 0.02, duration * 0.68);
       gain.gain.setValueAtTime(0.0001, start);
       gain.gain.exponentialRampToValueAtTime(peak, start + attack);

@@ -71,6 +71,7 @@
     index: 0,
     playing: false,
     ended: false,
+    hasPlayed: false,
     scrubbing: false,
     shuffle: false,
     repeat: "off",
@@ -667,6 +668,10 @@
         }
         state.ended = false;
         setPlaying(true);
+        if (!state.hasPlayed) {
+          state.hasPlayed = true;
+          showToast("声音已开启 · 建议佩戴耳机");
+        }
         const time = engine.currentTime;
         updateTransport(time);
         syncLyrics(time, true);
