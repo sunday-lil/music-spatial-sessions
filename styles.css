@@ -134,16 +134,16 @@ a {
   overflow: hidden;
   pointer-events: none;
   background:
-    radial-gradient(1100px 800px at 80% 12%, rgba(var(--glow-rgb), 0.105), transparent 62%),
-    radial-gradient(900px 700px at 10% 88%, rgba(var(--cool-rgb), 0.08), transparent 66%),
-    linear-gradient(180deg, #080808 0%, #050505 58%, #070606 100%);
+    radial-gradient(1100px 800px at 80% 12%, rgba(var(--glow-rgb), 0.125), transparent 62%),
+    radial-gradient(900px 700px at 10% 88%, rgba(var(--cool-rgb), 0.09), transparent 66%),
+    linear-gradient(180deg, #090808 0%, #060505 58%, #080606 100%);
 }
 
 .orb {
   position: absolute;
   border-radius: 50%;
   will-change: transform, opacity;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .orb-a {
@@ -151,7 +151,7 @@ a {
   height: 68vw;
   left: -21vw;
   top: -32vw;
-  background: radial-gradient(circle at 50% 50%, rgba(var(--glow-rgb), 0.19), rgba(var(--glow-rgb), 0.055) 38%, transparent 68%);
+  background: radial-gradient(circle at 50% 50%, rgba(var(--glow-rgb), 0.23), rgba(var(--glow-rgb), 0.065) 38%, transparent 68%);
   animation: drift-a 34s ease-in-out infinite alternate;
 }
 
@@ -160,7 +160,7 @@ a {
   height: 74vw;
   right: -28vw;
   bottom: -38vw;
-  background: radial-gradient(circle at 50% 50%, rgba(var(--cool-rgb), 0.15), rgba(var(--cool-rgb), 0.045) 40%, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(var(--cool-rgb), 0.19), rgba(var(--cool-rgb), 0.055) 40%, transparent 70%);
   animation: drift-b 41s ease-in-out infinite alternate;
 }
 
@@ -169,8 +169,8 @@ a {
   height: 42vw;
   left: 36%;
   top: 18%;
-  background: radial-gradient(circle at 50% 50%, rgba(var(--glow-rgb), 0.07), transparent 65%);
-  opacity: 0.7;
+  background: radial-gradient(circle at 50% 50%, rgba(var(--glow-rgb), 0.09), transparent 65%);
+  opacity: 0.75;
   animation: drift-c 29s ease-in-out infinite alternate;
 }
 
@@ -181,15 +181,15 @@ a {
   height: 100%;
   display: block;
   mix-blend-mode: screen;
-  opacity: 0.92;
+  opacity: 0.96;
 }
 
 .backdrop-vignette {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 50% 42%, transparent 26%, rgba(0, 0, 0, 0.26) 72%, rgba(0, 0, 0, 0.62) 100%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 18%, transparent 78%, rgba(0, 0, 0, 0.42));
+    radial-gradient(ellipse at 50% 42%, transparent 26%, rgba(0, 0, 0, 0.22) 72%, rgba(0, 0, 0, 0.56) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.26), transparent 18%, transparent 78%, rgba(0, 0, 0, 0.36));
 }
 
 .app::after {
@@ -788,7 +788,7 @@ a {
   height: calc(var(--cover-size) * 1.64);
   transform: translate(-50%, -50%);
   pointer-events: none;
-  opacity: 0.92;
+  opacity: 0.96;
 }
 
 .cover-aura {
@@ -996,9 +996,9 @@ a {
   justify-content: space-between;
   gap: 14px;
   padding: 0 2px 7px;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.12em;
-  color: rgba(244, 239, 230, 0.3);
+  color: rgba(244, 239, 230, 0.42);
 }
 
 .wave-label {
@@ -1011,11 +1011,11 @@ a {
 .wave-label .ico {
   width: 13px;
   height: 13px;
-  color: rgba(var(--glow-rgb), 0.78);
+  color: rgba(var(--glow-rgb), 0.9);
 }
 
 .wave-format {
-  color: rgba(244, 239, 230, 0.22);
+  color: rgba(244, 239, 230, 0.32);
   letter-spacing: 0.075em;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
@@ -1024,8 +1024,8 @@ a {
 #waveCanvas {
   display: block;
   width: 100%;
-  height: 31px;
-  opacity: 0.85;
+  height: 35px;
+  opacity: 0.92;
 }
 
 /* ---- Details ----------------------------------------------- */
@@ -1227,7 +1227,7 @@ a {
   font-size: 9.5px;
   line-height: 1;
   letter-spacing: 0.04em;
-  color: rgba(244, 239, 230, 0.35);
+  color: rgba(244, 239, 230, 0.46);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1256,8 +1256,8 @@ a {
     to right,
     var(--paper) 0%,
     var(--paper) var(--p),
-    rgba(255, 255, 255, 0.13) var(--p),
-    rgba(255, 255, 255, 0.13) 100%
+    rgba(255, 255, 255, 0.17) var(--p),
+    rgba(255, 255, 255, 0.17) 100%
   );
 }
 
@@ -1292,8 +1292,8 @@ a {
     to right,
     var(--paper) 0%,
     var(--paper) var(--p),
-    rgba(255, 255, 255, 0.13) var(--p),
-    rgba(255, 255, 255, 0.13) 100%
+    rgba(255, 255, 255, 0.17) var(--p),
+    rgba(255, 255, 255, 0.17) 100%
   );
 }
 
@@ -1330,8 +1330,8 @@ a {
     to right,
     rgba(244, 239, 230, 0.6) 0%,
     rgba(244, 239, 230, 0.6) var(--p),
-    rgba(255, 255, 255, 0.11) var(--p),
-    rgba(255, 255, 255, 0.11) 100%
+    rgba(255, 255, 255, 0.14) var(--p),
+    rgba(255, 255, 255, 0.14) 100%
   );
 }
 
@@ -1347,8 +1347,8 @@ a {
     to right,
     rgba(244, 239, 230, 0.6) 0%,
     rgba(244, 239, 230, 0.6) var(--p),
-    rgba(255, 255, 255, 0.11) var(--p),
-    rgba(255, 255, 255, 0.11) 100%
+    rgba(255, 255, 255, 0.14) var(--p),
+    rgba(255, 255, 255, 0.14) 100%
   );
 }
 
@@ -1378,7 +1378,7 @@ a {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  color: rgba(244, 239, 230, 0.44);
+  color: rgba(244, 239, 230, 0.56);
   transition: color 0.25s ease, background 0.25s ease, transform 0.25s var(--ease-out);
 }
 
@@ -1445,7 +1445,7 @@ a {
 .control-btn.skip {
   width: 42px;
   height: 42px;
-  color: rgba(244, 239, 230, 0.58);
+  color: rgba(244, 239, 230, 0.68);
 }
 
 .control-btn.skip .ico {
@@ -2076,7 +2076,7 @@ a {
   }
 
   .wave-head {
-    font-size: 8px;
+    font-size: 9px;
   }
 
   .wave-format {
@@ -2084,7 +2084,7 @@ a {
   }
 
   #waveCanvas {
-    height: 27px;
+    height: 30px;
   }
 
   .details {

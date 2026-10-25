@@ -229,9 +229,9 @@
     ctx.fillRect(0, 0, size, size);
 
     const wash = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, size * 0.8);
-    wash.addColorStop(0, rgba(palette.glow, 0.21));
-    wash.addColorStop(0.36, rgba(palette.glow, 0.1));
-    wash.addColorStop(0.7, rgba(palette.cool, 0.04));
+    wash.addColorStop(0, rgba(palette.glow, 0.24));
+    wash.addColorStop(0.36, rgba(palette.glow, 0.12));
+    wash.addColorStop(0.7, rgba(palette.cool, 0.05));
     wash.addColorStop(1, rgba(palette.glow, 0));
     ctx.fillStyle = wash;
     ctx.fillRect(0, 0, size, size);
@@ -257,8 +257,8 @@
       const radius = sunR * (1.52 + i * 0.41);
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(255, 246, 232, ${(0.085 - i * 0.017).toFixed(3)})`;
-      ctx.lineWidth = 1.6;
+      ctx.strokeStyle = `rgba(255, 246, 232, ${(0.115 - i * 0.02).toFixed(3)})`;
+      ctx.lineWidth = 1.8;
       ctx.stroke();
 
       const angle = -0.7 + i * 1.05;
@@ -315,7 +315,8 @@
     sun.addColorStop(0, rgba(palette.core, 1));
     sun.addColorStop(0.42, rgba(palette.core, 0.98));
     sun.addColorStop(0.76, rgba(palette.glow, 0.98));
-    sun.addColorStop(0.94, rgba(palette.glow, 0.58));
+    sun.addColorStop(0.94, rgba(palette.core, 0.9));
+    sun.addColorStop(0.985, rgba(palette.glow, 0.45));
     sun.addColorStop(1, rgba(palette.glow, 0));
     ctx.fillStyle = sun;
     ctx.beginPath();
@@ -358,6 +359,33 @@
     ctx.arc(eclipseX, eclipseY, eclipseR * 0.985, 0, Math.PI * 2);
     ctx.strokeStyle = rgba(palette.core, 0.11);
     ctx.lineWidth = 1.1;
+    ctx.stroke();
+
+    /* The living edge of the hidden sun. */
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+
+    ctx.beginPath();
+    ctx.arc(sunX, sunY, sunR * 1.008, Math.PI * 0.53, Math.PI * 1.08);
+    ctx.strokeStyle = rgba(palette.glow, 0.2);
+    ctx.lineWidth = 18;
+    ctx.shadowColor = palette.glow;
+    ctx.shadowBlur = 34;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(sunX, sunY, sunR * 1.006, Math.PI * 0.55, Math.PI * 1.05);
+    ctx.strokeStyle = rgba(palette.core, 0.88);
+    ctx.lineWidth = 3.8;
+    ctx.shadowBlur = 24;
+    ctx.stroke();
+    ctx.restore();
+
+    /* A cool breath on the dark side keeps the disc from going flat. */
+    ctx.beginPath();
+    ctx.arc(eclipseX, eclipseY, eclipseR * 0.99, Math.PI * 1.4, Math.PI * 1.95);
+    ctx.strokeStyle = rgba(palette.cool, 0.17);
+    ctx.lineWidth = 1.4;
     ctx.stroke();
 
     /* horizon */
@@ -1105,8 +1133,8 @@
       const color = colors[blob.color % colors.length];
       const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
 
-      gradient.addColorStop(0, rgba(color, 0.12 + energy * 0.16));
-      gradient.addColorStop(0.42, rgba(color, 0.045 + energy * 0.075));
+      gradient.addColorStop(0, rgba(color, 0.15 + energy * 0.19));
+      gradient.addColorStop(0.42, rgba(color, 0.055 + energy * 0.09));
       gradient.addColorStop(1, rgba(color, 0));
       ctx.fillStyle = gradient;
       ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
@@ -1174,18 +1202,18 @@
       }
 
       const angle = state.rotation + (i / count) * Math.PI * 2 - Math.PI / 2;
-      const length = (2.2 + energy * 27 + levels.high * 4 + (i % 9 === 0 ? 2 : 0)) * scale;
+      const length = (2.5 + energy * 30 + levels.high * 4 + (i % 9 === 0 ? 2 : 0)) * scale;
       const startX = centerX + Math.cos(angle) * radius;
       const startY = centerY + Math.sin(angle) * radius;
       const endX = centerX + Math.cos(angle) * (radius + length);
       const endY = centerY + Math.sin(angle) * (radius + length);
-      const alpha = 0.065 + energy * 0.42;
+      const alpha = 0.08 + energy * 0.52;
       const warm = i % 11 === 0;
 
       ctx.strokeStyle = warm
-        ? rgba(palette.glow, Math.min(0.55, alpha + 0.06))
+        ? rgba(palette.glow, Math.min(0.62, alpha + 0.06))
         : `rgba(244, 239, 230, ${alpha.toFixed(3)})`;
-      ctx.lineWidth = i % 4 === 0 ? 1.15 : 0.85;
+      ctx.lineWidth = i % 4 === 0 ? 1.25 : 0.95;
 
       ctx.beginPath();
       ctx.moveTo(startX, startY);
@@ -1195,7 +1223,7 @@
 
     /* Whisper-thin guide rings. */
     ctx.globalCompositeOperation = "source-over";
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.055)";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.075)";
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius - 2.5, 0, Math.PI * 2);
@@ -1249,15 +1277,15 @@
       } else {
         const x = i / (pointCount - 1);
         target = (
-          Math.sin(x * Math.PI * 3.1 + idleTime * 0.00125) * 0.31 * Math.sin(x * Math.PI) +
-          Math.sin(x * Math.PI * 7.2 - idleTime * 0.00082) * 0.08
+          Math.sin(x * Math.PI * 3.1 + idleTime * 0.00125) * 0.4 * Math.sin(x * Math.PI) +
+          Math.sin(x * Math.PI * 7.2 - idleTime * 0.00082) * 0.1
         );
       }
       points[i] += (target - points[i]) * 0.34;
     }
 
     const mid = height * 0.54;
-    const amplitude = height * (state.playing ? 0.52 : 0.17);
+    const amplitude = height * (state.playing ? 0.55 : 0.23);
     const coords = [];
 
     for (let i = 0; i < pointCount; i++) {
@@ -1277,9 +1305,9 @@
     ctx.closePath();
 
     const fill = ctx.createLinearGradient(0, mid - amplitude, 0, mid + amplitude);
-    fill.addColorStop(0, rgba(palette.core, 0.24));
-    fill.addColorStop(0.5, rgba(palette.core, 0.035));
-    fill.addColorStop(1, rgba(palette.core, 0.24));
+    fill.addColorStop(0, rgba(palette.core, 0.32));
+    fill.addColorStop(0.5, rgba(palette.core, 0.05));
+    fill.addColorStop(1, rgba(palette.core, 0.32));
     ctx.fillStyle = fill;
     ctx.fill();
 
@@ -1288,11 +1316,11 @@
       if (index === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     });
-    ctx.strokeStyle = "rgba(244, 239, 230, 0.55)";
-    ctx.lineWidth = 1.1;
+    ctx.strokeStyle = "rgba(244, 239, 230, 0.78)";
+    ctx.lineWidth = 1.3;
     ctx.lineJoin = "round";
-    ctx.shadowColor = rgba(palette.glow, 0.35);
-    ctx.shadowBlur = 7;
+    ctx.shadowColor = rgba(palette.glow, 0.45);
+    ctx.shadowBlur = 9;
     ctx.stroke();
     ctx.shadowBlur = 0;
 

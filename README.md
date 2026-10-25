@@ -3,12 +3,14 @@
 一个仿 Apple Music「正在播放」体验的沉浸式音乐可视化概念。
 不是静态海报：页面里有一支用 Web Audio 实时合成的四首曲目，频谱、波形、光环和背景极光都跟着真实音频呼吸。
 
+![Music — Spatial Sessions 正在播放界面](preview.jpg)
+
 ## 打开方式
 
 直接双击 `index.html` 即可。
 
 - 无需安装、无需构建、无需联网。
-- 没有外部图片、字体或音频文件；封面由 Canvas 现场绘制，音乐由 Web Audio 现场合成。
+- 应用本身不加载任何外部图片、字体或音频；封面由 Canvas 现场绘制，音乐由 Web Audio 现场合成。README 顶部的 `preview.jpg` 是运行截图。
 - 建议使用最新版 Chrome / Edge，并戴上耳机。
 - 浏览器要求用户手势后才能播放声音：点击白色播放按钮即可开始。
 
@@ -60,6 +62,7 @@ styles.css     视觉系统、响应式布局、动效与可访问性
 tracks.js      四首曲目的元数据、配色、和弦进行、逐行歌词
 audio.js       生成式编曲与 Web Audio 音频图
 app.js         播放状态、UI 渲染、Canvas 可视化、交互
+preview.jpg    正在播放状态的运行截图
 README.md      本文件
 ```
 
